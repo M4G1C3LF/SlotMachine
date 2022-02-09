@@ -1,0 +1,11 @@
+/Library
+/Temp
+/Logs
+*.pidb
+*.sln
+*.userprefs
+*.orig
+*.csproj
+*.unityproj
+.vscode/
+
