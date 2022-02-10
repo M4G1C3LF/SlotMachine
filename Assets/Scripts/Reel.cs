@@ -17,10 +17,6 @@ public class Reel : MonoBehaviour
     private List<GameObject> figures;
     public bool isSpinning;
     
-
-    //FOR DEVELOPMENT VARS
-    public bool stopSpinning;
-    //
     private void OnEnable() {
         GetAllFiguresOnReel();
         SetDistanceBetweenFigures();
@@ -73,13 +69,12 @@ public class Reel : MonoBehaviour
         figure.transform.localPosition = new Vector2(0f, lowerPositionFound - distanceBetweenFigures);
     }
 
-    private void StartSpinning(){
+    public void StartSpinning(){
         isSpinning = true;
     }
-    private void StopSpinning(){
+    public void StopSpinning(){
         isSpinning = false;
-        stopSpinning = false;
-
+        
         SortFiguresByDescendingPosition();
         SetFiguresToCorrectPosition();
         
@@ -122,8 +117,6 @@ public class Reel : MonoBehaviour
         if (isSpinning){
             DoSpinMotion();
         }
-        if(stopSpinning){
-            StopSpinning();
-        }
+        
     }
 }
