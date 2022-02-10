@@ -43,7 +43,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8f291b8bb098424a9f531aed9d43cf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spinningSpeed: 5
+  spinningSpeed: 50
   direction: 1
   distanceBetweenFigures: 2
   isSpinning: 0
+  stopSpinning: 0

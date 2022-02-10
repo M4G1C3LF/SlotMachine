@@ -17,6 +17,10 @@ public class Reel : MonoBehaviour
     private List<GameObject> figures;
     public bool isSpinning;
     
+
+    //FOR DEVELOPMENT VARS
+    public bool stopSpinning;
+    //
     private void OnEnable() {
         GetAllFiguresOnReel();
         SetDistanceBetweenFigures();
@@ -27,13 +31,9 @@ public class Reel : MonoBehaviour
     private void SetDistanceBetweenFigures(){
         int i = 0;
         figures.ForEach(figure => {
-            Vector3 actualPosition = figure.transform.localPosition;
             figure.transform.localPosition = new Vector2(0f,-distanceBetweenFigures*i);
             i++;
         });
-    }
-    private void StartSpinning(){
-        isSpinning = true;
     }
     private void DoSpinMotion(){
         Vector3 dir = direction == ReelDirection.UPWARDS ? Vector3.up : Vector3.down;
@@ -47,7 +47,7 @@ public class Reel : MonoBehaviour
                 TranslateFigureToTop(figure);
                 return;    
             }
-            figure.transform.localPosition += (dir * spinningSpeed * Time.deltaTime);
+            figure.transform.localPosition += dir * spinningSpeed * Time.deltaTime;
         });
     }
     private bool HasToTranslateToTop(GameObject figure){
@@ -72,6 +72,44 @@ public class Reel : MonoBehaviour
         });
         figure.transform.localPosition = new Vector2(0f, lowerPositionFound - distanceBetweenFigures);
     }
+
+    private void StartSpinning(){
+        isSpinning = true;
+    }
+    private void StopSpinning(){
+        isSpinning = false;
+        stopSpinning = false;
+
+        SortFiguresByDescendingPosition();
+        SetFiguresToCorrectPosition();
+        
+    }
+    private void SortFiguresByDescendingPosition(){
+        figures.Sort(delegate(GameObject a, GameObject b)
+        {
+            if (a == null && b == null) return 0;
+            else if (a == null) return -1;
+            else if (b == null) return 1;
+            else return b.transform.localPosition.y.CompareTo(a.transform.localPosition.y);
+        });
+    }
+    private void SetFiguresToCorrectPosition(){
+        List<float> yPositions = GetFiguresYPositions();
+        int j = 0;
+        figures.ForEach(figure =>{
+            Debug.Log(figure.name);
+            figure.transform.localPosition = new Vector3(0f,yPositions[j]);
+            j++;
+        });
+    }
+    private List<float> GetFiguresYPositions(){
+        List<float> yPositions = new List<float>();
+        for (int i = 0; i<figures.ToArray().Length;i++){
+            yPositions.Add(-distanceBetweenFigures*i);
+        }
+        return yPositions;
+
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -83,6 +121,9 @@ public class Reel : MonoBehaviour
     {
         if (isSpinning){
             DoSpinMotion();
+        }
+        if(stopSpinning){
+            StopSpinning();
         }
     }
 }

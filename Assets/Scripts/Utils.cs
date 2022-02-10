@@ -20,7 +20,7 @@ public static class Utils {
 		}
 		return null;
 	}
-    
+
 	public static List<GameObject> FindChildrensWithTag(GameObject gO, string tag){
 		List<GameObject> foundList = new List<GameObject>();
 		Transform[] gameObjects = gO.GetComponentsInChildren<Transform> (true);
@@ -31,5 +31,4 @@ public static class Utils {
 		}
 		return foundList;
 	}
-    
 }
