@@ -74,6 +74,7 @@ public class SlotMachine : MonoBehaviour
         CheckSpinButton();
     }
     private IEnumerator SpinMotion(){
+        Debug.Log("Spin motion");
         spinButton.GetComponent<Animator>().SetBool(AnimatorParameters.BUTTON_IS_ENABLED, false);
         rollerSpinningFrequencyTimer.InitializeTimer();
         rollerSpinningFrequencyTimer.SetSeconds(0);
