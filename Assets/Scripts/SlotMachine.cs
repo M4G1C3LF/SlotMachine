@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SlotMachine : MonoBehaviour
 {
@@ -29,20 +30,22 @@ public class SlotMachine : MonoBehaviour
     private List<Reel> reels;
     [SerializeField]
     private List<Reward> rewards;
+    [SerializeField]
+    private GameObject spinButton;
 
-    // DEVELOPMENT VARS
-
-    public bool spinButtonPressed;
-    public bool checkPaylinePressed;
-    
-    //
+    private bool isSpinning;
 
     private void OnEnable() {
         reels = GetReelsInChildren();
         paylines = GetPaylinesInChildren();
         credits = initialCredits;
+        CheckSpinButton();
     }
 
+    private void CheckSpinButton(){
+        if (credits >= creditsPerSpin)
+            spinButton.GetComponent<Animator>().SetBool(AnimatorParameters.SPIN_BUTTON_IS_ENABLED, true);
+    }
     public List<Reel> GetReelsInChildren(){
         List<Reel> reels = new List<Reel>();
         Reel[] reelArray = GetComponentsInChildren<Reel>();
@@ -59,8 +62,7 @@ public class SlotMachine : MonoBehaviour
         }
         return paylines;
     }
-    private void SpinReels(){
-        spinButtonPressed = false;
+    public void SpinReels(){
         if (credits >= creditsPerSpin){
             credits -= creditsPerSpin;
             StartCoroutine(SpinMotion());
@@ -69,7 +71,7 @@ public class SlotMachine : MonoBehaviour
             Debug.Log("Not enought credits to play...");
     }
     private IEnumerator SpinMotion(){
-
+        spinButton.GetComponent<Animator>().SetBool(AnimatorParameters.SPIN_BUTTON_IS_ENABLED, false);
         rollerSpinningFrequencyTimer.InitializeTimer();
         rollerSpinningFrequencyTimer.SetSeconds(0);
 
@@ -108,6 +110,7 @@ public class SlotMachine : MonoBehaviour
         }
         rollerStoppingFrequencyTimer.InitializeTimer();
         CheckPaylines();
+        CheckSpinButton();
     }
 
     private void CheckPaylines(){
@@ -148,7 +151,7 @@ public class SlotMachine : MonoBehaviour
                 lastFigureFound = figure;
             });
             totalCombinations.AddRange(combinationsFoundInPayline);
-
+            
         });
 
         Debug.Log("Combinations Found");
@@ -176,12 +179,6 @@ public class SlotMachine : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (spinButtonPressed)
-            SpinReels();
-
-        if (checkPaylinePressed){
-            checkPaylinePressed = false;
-            CheckPaylines();
-        }
+        
     }
 }
