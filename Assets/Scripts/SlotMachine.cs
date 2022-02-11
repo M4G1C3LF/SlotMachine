@@ -6,8 +6,6 @@ using UnityEngine.UI;
 public class SlotMachine : MonoBehaviour
 {
     [SerializeField]
-    private int initialCredits;
-    [SerializeField]
     private int credits;
     [SerializeField]
     private int creditsPerSpin;
@@ -32,19 +30,20 @@ public class SlotMachine : MonoBehaviour
     private List<Reward> rewards;
     [SerializeField]
     private GameObject spinButton;
+    [SerializeField]
+    private GameObject addCreditsButton;
 
     private bool isSpinning;
 
     private void OnEnable() {
         reels = GetReelsInChildren();
         paylines = GetPaylinesInChildren();
-        credits = initialCredits;
-        CheckSpinButton();
+        addCreditsButton.GetComponent<Animator>().SetBool(AnimatorParameters.BUTTON_IS_ENABLED, true);
     }
 
     private void CheckSpinButton(){
         if (credits >= creditsPerSpin)
-            spinButton.GetComponent<Animator>().SetBool(AnimatorParameters.SPIN_BUTTON_IS_ENABLED, true);
+            spinButton.GetComponent<Animator>().SetBool(AnimatorParameters.BUTTON_IS_ENABLED, true);
     }
     public List<Reel> GetReelsInChildren(){
         List<Reel> reels = new List<Reel>();
@@ -70,8 +69,12 @@ public class SlotMachine : MonoBehaviour
         else
             Debug.Log("Not enought credits to play...");
     }
+    public void Add50Credits(){
+        credits += 50;
+        CheckSpinButton();
+    }
     private IEnumerator SpinMotion(){
-        spinButton.GetComponent<Animator>().SetBool(AnimatorParameters.SPIN_BUTTON_IS_ENABLED, false);
+        spinButton.GetComponent<Animator>().SetBool(AnimatorParameters.BUTTON_IS_ENABLED, false);
         rollerSpinningFrequencyTimer.InitializeTimer();
         rollerSpinningFrequencyTimer.SetSeconds(0);
 

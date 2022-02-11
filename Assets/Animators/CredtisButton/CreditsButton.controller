@@ -128,7 +128,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SpinButton
+  m_Name: CreditsButton
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: isClicked
@@ -189,7 +189,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: cfea00288a70ab946a3becf042ad040b, type: 2}
+  m_Motion: {fileID: 7400000, guid: e574e921a19989e45839c2379cb0c7d5, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -216,7 +216,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 883783c2eb6944140bf4725993ab3eca, type: 2}
+  m_Motion: {fileID: 7400000, guid: b086ed583d345dc4582939c3eaf3cbf2, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -314,7 +314,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 084c7a4b286670949917f41cf3a07dc6, type: 2}
+  m_Motion: {fileID: 7400000, guid: 713ba00acbb6d444283ee03568fc6885, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
