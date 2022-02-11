@@ -4,10 +4,8 @@ using UnityEngine;
 
 [System.Serializable]
 public class Combination {
-    //[SerializeField]
-    //private int occurrences;
-    [SerializeField]
 
+    [SerializeField]
     private List<Figure> figures;
     public int GetOccurrences(){
         //return occurrences;
@@ -18,6 +16,9 @@ public class Combination {
     }
     public void AddFigure(Figure figure){
         figures.Add(figure);
+    }
+    public List<Figure> GetFigures(){
+        return figures;
     }
     public Combination(List<Figure> figures) { 
         this.figures = figures; 

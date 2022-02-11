@@ -361,6 +361,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 900171413736568944, guid: e7e795d842981d14db8271d23b1e7996, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 1851241479116940916, guid: e7e795d842981d14db8271d23b1e7996, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -439,7 +443,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1851241479116940917, guid: e7e795d842981d14db8271d23b1e7996, type: 3}
       propertyPath: paylines.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1851241479116940917, guid: e7e795d842981d14db8271d23b1e7996, type: 3}
       propertyPath: reels.Array.data[0]
@@ -708,6 +712,22 @@ PrefabInstance:
     - target: {fileID: 1851241479116940920, guid: e7e795d842981d14db8271d23b1e7996, type: 3}
       propertyPath: m_Name
       value: SlotMachine
+      objectReference: {fileID: 0}
+    - target: {fileID: 4539839398319864727, guid: e7e795d842981d14db8271d23b1e7996, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 5941797666578481406, guid: e7e795d842981d14db8271d23b1e7996, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 7447072388008246880, guid: e7e795d842981d14db8271d23b1e7996, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 8640411513984465884, guid: e7e795d842981d14db8271d23b1e7996, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7e795d842981d14db8271d23b1e7996, type: 3}

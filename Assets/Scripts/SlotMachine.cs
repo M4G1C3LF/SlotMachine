@@ -156,6 +156,9 @@ public class SlotMachine : MonoBehaviour
             foreach (Combination combination in totalCombinations){
                 
                 if (reward.GetFigureType().Equals(combination.GetFigureType()) && reward.GetOccurrences().Equals(combination.GetOccurrences())){
+                    combination.GetFigures().ForEach( figure => {
+                        figure.GetComponent<Animator>().SetTrigger(AnimatorParameters.FIGURE_BLINK);
+                    });
                     Debug.Log(combination.GetOccurrences()+" "+combination.GetFigureType()+" - Credits earned: "+reward.GetCredits());
                     credits += reward.GetCredits();
                 }
