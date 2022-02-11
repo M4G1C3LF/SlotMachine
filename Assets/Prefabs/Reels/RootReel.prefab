@@ -47,4 +47,3 @@ MonoBehaviour:
   direction: 1
   distanceBetweenFigures: 2
   isSpinning: 0
-  stopSpinning: 0

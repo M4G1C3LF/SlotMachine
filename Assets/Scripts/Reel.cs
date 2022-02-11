@@ -12,8 +12,7 @@ public class Reel : MonoBehaviour
     private float spinningSpeed;
     [SerializeField]
     private ReelDirection direction;
-    [SerializeField]
-    private float distanceBetweenFigures;
+    public float distanceBetweenFigures;
     private List<GameObject> figures;
     public bool isSpinning;
     
@@ -24,15 +23,21 @@ public class Reel : MonoBehaviour
     private void GetAllFiguresOnReel(){
         figures = Utils.FindChildrensWithTag(gameObject,Tags.FIGURE);
     }
+    public List<GameObject> GetFigures(){
+        return figures;
+    }
     public Figure GetFigureAtPosition(int position){
         return figures[position].GetComponent<Figure>();
     }
-    private void SetDistanceBetweenFigures(){
+    public void SetDistanceBetweenFigures(){
         int i = 0;
         figures.ForEach(figure => {
             figure.transform.localPosition = new Vector2(0f,-distanceBetweenFigures*i);
             i++;
         });
+    }
+    public float GetDistanceBetweenFigures(){
+        return distanceBetweenFigures;
     }
     private void DoSpinMotion(){
         Vector3 dir = direction == ReelDirection.UPWARDS ? Vector3.up : Vector3.down;
