@@ -5,6 +5,12 @@ using UnityEngine;
 public class SlotMachine : MonoBehaviour
 {
     [SerializeField]
+    private int initialCredits;
+    [SerializeField]
+    private int credits;
+    [SerializeField]
+    private int creditsPerSpin;
+    [SerializeField]
     private int centralPosition;
     [SerializeField]
     private MinMaxFloat rangeToStartStoppingRollers;
@@ -21,18 +27,22 @@ public class SlotMachine : MonoBehaviour
     [SerializeField]
     private List<Payline> paylines;
     private List<Reel> reels;
+    [SerializeField]
+    private List<Reward> rewards;
 
     // DEVELOPMENT VARS
 
     public bool spinButtonPressed;
     public bool checkPaylinePressed;
-
+    
     //
 
     private void OnEnable() {
         reels = GetReelsInChildren();
         paylines = GetPaylinesInChildren();
+        credits = initialCredits;
     }
+
     public List<Reel> GetReelsInChildren(){
         List<Reel> reels = new List<Reel>();
         Reel[] reelArray = GetComponentsInChildren<Reel>();
@@ -51,9 +61,15 @@ public class SlotMachine : MonoBehaviour
     }
     private void SpinReels(){
         spinButtonPressed = false;
-        StartCoroutine(SpinMotion());
+        if (credits >= creditsPerSpin){
+            credits -= creditsPerSpin;
+            StartCoroutine(SpinMotion());
+        }
+        else
+            Debug.Log("Not enought credits to play...");
     }
     private IEnumerator SpinMotion(){
+
         rollerSpinningFrequencyTimer.InitializeTimer();
         rollerSpinningFrequencyTimer.SetSeconds(0);
 
@@ -136,8 +152,15 @@ public class SlotMachine : MonoBehaviour
         });
 
         Debug.Log("Combinations Found");
-        totalCombinations.ForEach(combination => {
-            Debug.Log(combination.GetOccurrences()+" "+combination.GetFigureType());
+        rewards.ForEach(reward => {
+            foreach (Combination combination in totalCombinations){
+                
+                if (reward.GetFigureType().Equals(combination.GetFigureType()) && reward.GetOccurrences().Equals(combination.GetOccurrences())){
+                    Debug.Log(combination.GetOccurrences()+" "+combination.GetFigureType()+" - Credits earned: "+reward.GetCredits());
+                    credits += reward.GetCredits();
+                }
+                    
+            }
         });
     }
 
