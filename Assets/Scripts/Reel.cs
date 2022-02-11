@@ -24,6 +24,9 @@ public class Reel : MonoBehaviour
     private void GetAllFiguresOnReel(){
         figures = Utils.FindChildrensWithTag(gameObject,Tags.FIGURE);
     }
+    public Figure GetFigureAtPosition(int position){
+        return figures[position].GetComponent<Figure>();
+    }
     private void SetDistanceBetweenFigures(){
         int i = 0;
         figures.ForEach(figure => {
@@ -92,7 +95,6 @@ public class Reel : MonoBehaviour
         List<float> yPositions = GetFiguresYPositions();
         int j = 0;
         figures.ForEach(figure =>{
-            Debug.Log(figure.name);
             figure.transform.localPosition = new Vector3(0f,yPositions[j]);
             j++;
         });

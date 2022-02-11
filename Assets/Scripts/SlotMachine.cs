@@ -5,6 +5,8 @@ using UnityEngine;
 public class SlotMachine : MonoBehaviour
 {
     [SerializeField]
+    private int centralPosition;
+    [SerializeField]
     private MinMaxFloat rangeToStartStoppingRollers;
     [SerializeField]
     private float rollerSpinningFrequency;
@@ -16,25 +18,36 @@ public class SlotMachine : MonoBehaviour
     private Timer startStoppingRollersTimer;
     [SerializeField]
     private Timer rollerStoppingFrequencyTimer;
-    
+    [SerializeField]
+    private List<Payline> paylines;
     private List<Reel> reels;
 
     // DEVELOPMENT VARS
 
     public bool spinButtonPressed;
+    public bool checkPaylinePressed;
 
     //
 
     private void OnEnable() {
-        reels = GetReels();
+        reels = GetReelsInChildren();
+        paylines = GetPaylinesInChildren();
     }
-    private List<Reel> GetReels(){
+    public List<Reel> GetReelsInChildren(){
         List<Reel> reels = new List<Reel>();
         Reel[] reelArray = GetComponentsInChildren<Reel>();
         foreach (Reel reel in reelArray){
             reels.Add(reel);
         }
         return reels;
+    }
+    public List<Payline> GetPaylinesInChildren(){
+        List<Payline> paylines = new List<Payline>();
+        Payline[] paylinesArray = GetComponentsInChildren<Payline>();
+        foreach (Payline payline in paylinesArray){
+            paylines.Add(payline);
+        }
+        return paylines;
     }
     private void SpinReels(){
         spinButtonPressed = false;
@@ -78,8 +91,56 @@ public class SlotMachine : MonoBehaviour
             rollerStoppingFrequencyTimer.SetSeconds(rollerStoppingFrequency);
         }
         rollerStoppingFrequencyTimer.InitializeTimer();
-        
+        CheckPaylines();
     }
+
+    private void CheckPaylines(){
+
+        List<Combination> totalCombinations = new List<Combination>();
+        paylines.ForEach(payline => {
+            List<int> paylineRows = new List<int>();
+            for (int i = 0; i<reels.ToArray().Length;i++){
+                paylineRows.Add(payline.GetActiveRowForPosition(i));
+            }
+            
+            int j = 0;
+            List<Figure> paylineFigures = new List<Figure>();
+            reels.ForEach(reel => {
+                paylineFigures.Add(reel.GetFigureAtPosition(centralPosition+paylineRows[j]));
+                j++;
+            });
+           
+            List<Combination> combinationsFoundInPayline = new List<Combination>();
+            Figure lastFigureFound = null;
+            paylineFigures.ForEach(figure => {
+                
+                foreach (Combination combination in combinationsFoundInPayline){    
+                    if (lastFigureFound != null && lastFigureFound.GetFigureType().Equals(figure.GetFigureType()) && combination.GetFigureType().Equals(figure.GetFigureType())){
+                        combination.AddFigure(figure);
+                        lastFigureFound = figure;
+                        return;
+                    }
+                }
+                if (lastFigureFound != null && lastFigureFound.GetFigureType().Equals(figure.GetFigureType())){
+                    List<Figure> figureList = new List<Figure>();
+                    figureList.Add(lastFigureFound);
+                    figureList.Add(figure);
+                    combinationsFoundInPayline.Add(new Combination(figureList));
+                }
+                    
+
+                lastFigureFound = figure;
+            });
+            totalCombinations.AddRange(combinationsFoundInPayline);
+
+        });
+
+        Debug.Log("Combinations Found");
+        totalCombinations.ForEach(combination => {
+            Debug.Log(combination.GetOccurrences()+" "+combination.GetFigureType());
+        });
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -91,5 +152,10 @@ public class SlotMachine : MonoBehaviour
     {
         if (spinButtonPressed)
             SpinReels();
+
+        if (checkPaylinePressed){
+            checkPaylinePressed = false;
+            CheckPaylines();
+        }
     }
 }
