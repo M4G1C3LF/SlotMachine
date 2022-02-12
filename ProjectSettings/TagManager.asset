@@ -10,6 +10,7 @@ TagManager:
   - UI_CreditsEarned_Value
   - UI_SpinCost_Value
   - SFXManager
+  - BGMManager
   layers:
   - Default
   - TransparentFX

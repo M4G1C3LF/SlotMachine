@@ -38,6 +38,7 @@ public class SlotMachine : MonoBehaviour
         UpdateUICredits(credits);
         UpdateUICreditsEarned(0);
         UpdateUISpinCostValue(creditsPerSpin);
+
         reels = GetReelsInChildren();
         paylines = GetPaylinesInChildren();
         addCreditsButton.GetComponent<Animator>().SetBool(AnimatorParameters.BUTTON_IS_ENABLED, true);
@@ -243,7 +244,7 @@ public class SlotMachine : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        BGMManager.GetBGMManager().PlayTrack(0);
     }
 
     // Update is called once per frame
