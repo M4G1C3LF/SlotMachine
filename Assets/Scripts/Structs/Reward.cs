@@ -8,6 +8,9 @@ public struct Reward
     private FigureType figureType;
     [SerializeField]
     private int credits;
+    [SerializeField]
+    private GameObject elementOnUI;
+
     public int GetOccurrences(){
         return occurrences;
     }
@@ -17,9 +20,13 @@ public struct Reward
     public int GetCredits(){
         return credits;
     }
-    public Reward(int occurrences, FigureType figureType,int credits) { 
+    public GameObject GetElementOnUI(){
+        return elementOnUI;
+    }
+    public Reward(int occurrences, FigureType figureType,int credits, GameObject elementOnUI) { 
         this.occurrences = occurrences;
         this.figureType = figureType; 
         this.credits = credits;
+        this.elementOnUI = elementOnUI;
     }
 }

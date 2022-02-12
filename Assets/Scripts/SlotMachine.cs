@@ -32,7 +32,6 @@ public class SlotMachine : MonoBehaviour
     private GameObject spinButton;
     [SerializeField]
     private GameObject addCreditsButton;
-
     private bool isSpinning;
 
     private void OnEnable() {
@@ -42,7 +41,7 @@ public class SlotMachine : MonoBehaviour
     }
 
     private void CheckSpinButton(){
-        if (credits >= creditsPerSpin)
+        if (credits >= creditsPerSpin && !isSpinning)
             spinButton.GetComponent<Animator>().SetBool(AnimatorParameters.BUTTON_IS_ENABLED, true);
     }
     public List<Reel> GetReelsInChildren(){
@@ -69,12 +68,28 @@ public class SlotMachine : MonoBehaviour
         else
             Debug.Log("Not enought credits to play...");
     }
+
+    private void DisableLightsOnElements(){
+        Utils.FindChildrensWithTag(gameObject,Tags.FIGURE).ForEach( figure => {
+            Animator animator = figure.GetComponent<Animator>();
+            animator.SetBool(AnimatorParameters.FIGURE_IS_ENABLED,false);
+            
+        });
+        Utils.FindChildrensWithTag(gameObject,Tags.UI_REWARD).ForEach( reward => {
+            Animator animator = reward.GetComponent<Animator>();
+            animator.SetBool(AnimatorParameters.LOW_REWARD_IS_ENABLED,false);
+            animator.SetBool(AnimatorParameters.MID_REWARD_IS_ENABLED,false);
+            animator.SetBool(AnimatorParameters.HIGH_REWARD_IS_ENABLED,false);
+            
+        });
+    }
     public void Add50Credits(){
         credits += 50;
         CheckSpinButton();
     }
     private IEnumerator SpinMotion(){
-        Debug.Log("Spin motion");
+        isSpinning = true;
+        DisableLightsOnElements();
         spinButton.GetComponent<Animator>().SetBool(AnimatorParameters.BUTTON_IS_ENABLED, false);
         rollerSpinningFrequencyTimer.InitializeTimer();
         rollerSpinningFrequencyTimer.SetSeconds(0);
@@ -113,6 +128,8 @@ public class SlotMachine : MonoBehaviour
             rollerStoppingFrequencyTimer.SetSeconds(rollerStoppingFrequency);
         }
         rollerStoppingFrequencyTimer.InitializeTimer();
+        isSpinning = false;
+
         CheckPaylines();
         CheckSpinButton();
     }
@@ -152,7 +169,7 @@ public class SlotMachine : MonoBehaviour
                 }
                     
 
-                lastFigureFound = figure;
+                lastFigureFound = figure;   
             });
             totalCombinations.AddRange(combinationsFoundInPayline);
             
@@ -164,8 +181,31 @@ public class SlotMachine : MonoBehaviour
                 
                 if (reward.GetFigureType().Equals(combination.GetFigureType()) && reward.GetOccurrences().Equals(combination.GetOccurrences())){
                     combination.GetFigures().ForEach( figure => {
-                        figure.GetComponent<Animator>().SetTrigger(AnimatorParameters.FIGURE_BLINK);
+                        Animator figureAnimator = figure.GetComponent<Animator>();
+                        figureAnimator.SetTrigger(AnimatorParameters.FIGURE_BLINK);
+                        figureAnimator.SetBool(AnimatorParameters.FIGURE_IS_ENABLED,true);
                     });
+                    GameObject rewardUIElement = reward.GetElementOnUI();
+                    Animator rewardAnimator = rewardUIElement.GetComponentInParent<Animator>();
+                    switch (rewardUIElement.name){
+                        case "LowReward":
+                            rewardAnimator.SetTrigger(AnimatorParameters.LOW_REWARD_BLINK);
+                            rewardAnimator.SetBool(AnimatorParameters.LOW_REWARD_IS_ENABLED,true);
+                            break;
+                        case "MidReward":
+                            rewardAnimator.SetTrigger(AnimatorParameters.MID_REWARD_BLINK);
+                            rewardAnimator.SetBool(AnimatorParameters.MID_REWARD_IS_ENABLED,true);
+                            break;
+                        case "HighReward":
+                            rewardAnimator.SetTrigger(AnimatorParameters.HIGH_REWARD_BLINK);
+                            rewardAnimator.SetBool(AnimatorParameters.HIGH_REWARD_IS_ENABLED,true);
+                            break;
+                    }
+                    Animator figureRewardAnimator = Utils.FindChildrenWithTag(rewardAnimator.gameObject,Tags.FIGURE).GetComponent<Animator>();
+
+                    figureRewardAnimator.SetTrigger(AnimatorParameters.FIGURE_BLINK);
+                    figureRewardAnimator.SetBool(AnimatorParameters.FIGURE_IS_ENABLED,true);
+
                     Debug.Log(combination.GetOccurrences()+" "+combination.GetFigureType()+" - Credits earned: "+reward.GetCredits());
                     credits += reward.GetCredits();
                 }
