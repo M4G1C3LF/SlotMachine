@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Figure
   - UI_Reward
+  - UI_Credits_Value
+  - UI_CreditsEarned_Value
+  - UI_SpinCost_Value
   layers:
   - Default
   - TransparentFX

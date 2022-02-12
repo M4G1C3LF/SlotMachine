@@ -31,4 +31,9 @@ public static class Utils {
 		}
 		return foundList;
 	}
+	public static void UpdateText(GameObject textWrapper, string newText){
+        foreach(Text text in textWrapper.GetComponentsInChildren<Text>()){
+            text.text = newText;
+        }
+    }
 }

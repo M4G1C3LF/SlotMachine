@@ -35,6 +35,10 @@ public class SlotMachine : MonoBehaviour
     private bool isSpinning;
 
     private void OnEnable() {
+        UpdateUICredits(credits);
+        UpdateUICreditsEarned(0);
+        UpdateUISpinCostValue(creditsPerSpin);
+        
         reels = GetReelsInChildren();
         paylines = GetPaylinesInChildren();
         addCreditsButton.GetComponent<Animator>().SetBool(AnimatorParameters.BUTTON_IS_ENABLED, true);
@@ -63,6 +67,7 @@ public class SlotMachine : MonoBehaviour
     public void SpinReels(){
         if (credits >= creditsPerSpin){
             credits -= creditsPerSpin;
+            UpdateUICredits(credits);
             StartCoroutine(SpinMotion());
         }
         else
@@ -83,8 +88,10 @@ public class SlotMachine : MonoBehaviour
             
         });
     }
+
     public void Add50Credits(){
         credits += 50;
+        UpdateUICredits(credits);
         CheckSpinButton();
     }
     private IEnumerator SpinMotion(){
@@ -176,6 +183,7 @@ public class SlotMachine : MonoBehaviour
         });
 
         Debug.Log("Combinations Found");
+        int creditsEarned = 0;
         rewards.ForEach(reward => {
             foreach (Combination combination in totalCombinations){
                 
@@ -207,13 +215,26 @@ public class SlotMachine : MonoBehaviour
                     figureRewardAnimator.SetBool(AnimatorParameters.FIGURE_IS_ENABLED,true);
 
                     Debug.Log(combination.GetOccurrences()+" "+combination.GetFigureType()+" - Credits earned: "+reward.GetCredits());
-                    credits += reward.GetCredits();
+                    creditsEarned += reward.GetCredits();
                 }
                     
             }
         });
+        credits += creditsEarned;
+
+        UpdateUICredits(credits);
+        UpdateUICreditsEarned(creditsEarned);
     }
 
+    private void UpdateUICredits(int value){
+        Utils.UpdateText(Utils.FindChildrenWithTag(gameObject,Tags.UI_CREDITS_VALUE), value.ToString());
+    }
+    private void UpdateUICreditsEarned(int value){
+        Utils.UpdateText(Utils.FindChildrenWithTag(gameObject,Tags.UI_CREDITS_EARNED_VALUE), value.ToString());
+    }
+    private void UpdateUISpinCostValue(int value){
+        Utils.UpdateText(Utils.FindChildrenWithTag(gameObject,Tags.UI_SPIN_COST_VALUE), value.ToString());
+    }
     // Start is called before the first frame update
     void Start()
     {
