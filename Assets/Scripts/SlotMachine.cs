@@ -38,7 +38,6 @@ public class SlotMachine : MonoBehaviour
         UpdateUICredits(credits);
         UpdateUICreditsEarned(0);
         UpdateUISpinCostValue(creditsPerSpin);
-        
         reels = GetReelsInChildren();
         paylines = GetPaylinesInChildren();
         addCreditsButton.GetComponent<Animator>().SetBool(AnimatorParameters.BUTTON_IS_ENABLED, true);
@@ -182,7 +181,6 @@ public class SlotMachine : MonoBehaviour
             
         });
 
-        Debug.Log("Combinations Found");
         int creditsEarned = 0;
         rewards.ForEach(reward => {
             foreach (Combination combination in totalCombinations){
@@ -214,7 +212,6 @@ public class SlotMachine : MonoBehaviour
                     figureRewardAnimator.SetTrigger(AnimatorParameters.FIGURE_BLINK);
                     figureRewardAnimator.SetBool(AnimatorParameters.FIGURE_IS_ENABLED,true);
 
-                    Debug.Log(combination.GetOccurrences()+" "+combination.GetFigureType()+" - Credits earned: "+reward.GetCredits());
                     creditsEarned += reward.GetCredits();
                 }
                     
