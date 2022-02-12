@@ -90,6 +90,7 @@ public class SlotMachine : MonoBehaviour
 
     public void Add50Credits(){
         credits += 50;
+        SFXManager.GetSFXManager().PlayAddCredit();
         UpdateUICredits(credits);
         CheckSpinButton();
     }
@@ -221,6 +222,13 @@ public class SlotMachine : MonoBehaviour
 
         UpdateUICredits(credits);
         UpdateUICreditsEarned(creditsEarned);
+
+        
+        if(creditsEarned == 0){
+            SFXManager.GetSFXManager().PlayNoReward();
+        } else {
+            SFXManager.GetSFXManager().PlayReward();
+        }
     }
 
     private void UpdateUICredits(int value){

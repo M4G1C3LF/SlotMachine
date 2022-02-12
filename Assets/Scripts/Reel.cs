@@ -79,10 +79,11 @@ public class Reel : MonoBehaviour
 
     public void StartSpinning(){
         isSpinning = true;
+        SFXManager.GetSFXManager().PlayStartReelSpin();
     }
     public void StopSpinning(){
         isSpinning = false;
-        
+        SFXManager.GetSFXManager().PlayStopReelSpin();
         SortFiguresByDescendingPosition();
         SetFiguresToCorrectPosition();
         
