@@ -10,6 +10,7 @@ public class BGMManager : AudioManager
     int currentTrack;
     AudioSource playingTrack;
     bool isPlaying;
+    bool isPaused;
     public static BGMManager GetBGMManager() {
          return GameObject.FindWithTag(Tags.BGM_MANAGER).GetComponent<BGMManager>();
       }
@@ -17,9 +18,30 @@ public class BGMManager : AudioManager
         currentTrack = trackNumber;
         playingTrack = PlayClip(tracks[currentTrack].GetAudioClip());
         isPlaying = true;
+        isPaused = false;
+    }
+    public void PlayPause(){
+        if (!isPlaying)
+            PlayTrack(currentTrack);
+        else {
+            if(!isPaused)
+                PauseTrack();
+            else
+                ResumeTrack();
+        }
+        
+    }
+    public void PauseTrack(){
+        isPaused = true;
+        playingTrack.Pause();
+    }
+    public void ResumeTrack(){
+        isPaused = false;
+        playingTrack.UnPause();
     }
     public void StopMusic(){
         isPlaying = false;
+        isPaused = false;
         playingTrack = null;
         foreach(AudioSource aS in audioSources){
             if (aS.isPlaying){
@@ -33,6 +55,15 @@ public class BGMManager : AudioManager
             
         if(currentTrack == tracks.Length)
             currentTrack = 0;
+        PlayTrack(currentTrack);
+    }
+    public void PlayPreviousTrack(){
+        if (isPlaying)
+            playingTrack.Stop();
+        currentTrack--;
+            
+        if(currentTrack == -1)
+            currentTrack = tracks.Length-1;
         PlayTrack(currentTrack);
     }
     
@@ -51,7 +82,7 @@ public class BGMManager : AudioManager
     // Update is called once per frame
     void Update()
     {
-        if (isPlaying)
+        if (isPlaying && !isPaused)
             CheckTrackEnding();
     }
    

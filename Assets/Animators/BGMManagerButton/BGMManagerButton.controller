@@ -34,7 +34,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: isEnabled
+    m_ConditionEvent: isClicked
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1544968457498524409}
@@ -106,7 +106,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 2
-    m_ConditionEvent: isEnabled
+    m_ConditionEvent: isClicked
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 2848397106853157591}
@@ -128,7 +128,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: CreditsButton
+  m_Name: BGMManagerButton
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: isClicked
@@ -175,7 +175,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: IdleEnabled
+  m_Name: OnClick
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -189,7 +189,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: e574e921a19989e45839c2379cb0c7d5, type: 2}
+  m_Motion: {fileID: 7400000, guid: 528cc375b8558564083a95d16d537c01, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -202,7 +202,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: IdleDisabled
+  m_Name: Idle
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -216,7 +216,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: b086ed583d345dc4582939c3eaf3cbf2, type: 2}
+  m_Motion: {fileID: 7400000, guid: e574e921a19989e45839c2379cb0c7d5, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
