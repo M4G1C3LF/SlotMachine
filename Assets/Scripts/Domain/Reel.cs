@@ -13,17 +13,21 @@ public class Reel : MonoBehaviour
     [SerializeField]
     private ReelDirection direction;
     public float distanceBetweenFigures;
-    private List<GameObject> figures;
-    public bool isSpinning;
+    private List<Figure> figures;
+    private bool isSpinning;
     
     private void OnEnable() {
         GetAllFiguresOnReel();
         SetDistanceBetweenFigures();
     }
     private void GetAllFiguresOnReel(){
-        figures = Utils.FindChildrensWithTag(gameObject,Tags.FIGURE);
+        figures = new List<Figure>();
+        Utils.FindChildrensWithTag(gameObject,Tags.FIGURE).ForEach( figure => {
+            figures.Add(figure.GetComponent<Figure>());
+        });
+        
     }
-    public List<GameObject> GetFigures(){
+    public List<Figure> GetFigures(){
         return figures;
     }
     public Figure GetFigureAtPosition(int position){
@@ -43,12 +47,12 @@ public class Reel : MonoBehaviour
         Vector3 dir = direction == ReelDirection.UPWARDS ? Vector3.up : Vector3.down;
 
         figures.ForEach(figure => {
-            if (dir == Vector3.up && HasToTranslateToBottom(figure)){
-                TranslateFigureToBottom(figure);
+            if (dir == Vector3.up && HasToTranslateToBottom(figure.gameObject)){
+                TranslateFigureToBottom(figure.gameObject);
                 return;    
             }
-            if (dir == Vector3.down && HasToTranslateToTop(figure)){
-                TranslateFigureToTop(figure);
+            if (dir == Vector3.down && HasToTranslateToTop(figure.gameObject)){
+                TranslateFigureToTop(figure.gameObject);
                 return;    
             }
             figure.transform.localPosition += dir * spinningSpeed * Time.deltaTime;
@@ -84,12 +88,12 @@ public class Reel : MonoBehaviour
     public void StopSpinning(){
         isSpinning = false;
         SFXManager.GetSFXManager().PlayStopReelSpin();
-        figures = SortByDescendingPosition(figures);
-        SetFiguresToCorrectPosition();
+        figures = SortFigureByDescendingPosition(figures);
+        figures = SetFiguresToCorrectPosition(figures);
         
     }
-    private List<GameObject> SortByDescendingPosition(List<GameObject> list){
-        list.Sort(delegate(GameObject a, GameObject b)
+    public List<Figure> SortFigureByDescendingPosition(List<Figure> list){
+        list.Sort(delegate(Figure a, Figure b)
         {
             if (a == null && b == null) return 0;
             else if (a == null) return -1;
@@ -98,13 +102,14 @@ public class Reel : MonoBehaviour
         });
         return list;
     }
-    private void SetFiguresToCorrectPosition(){
+    public List<Figure> SetFiguresToCorrectPosition(List<Figure> list){
         List<float> yPositions = GetFiguresYPositions();
-        int j = 0;
-        figures.ForEach(figure =>{
-            figure.transform.localPosition = new Vector3(0f,yPositions[j]);
-            j++;
+        int i = 0;
+        list.ForEach(element =>{
+            element.transform.localPosition = new Vector3(0f,yPositions[i]);
+            i++;
         });
+        return list;
     }
     private List<float> GetFiguresYPositions(){
         List<float> yPositions = new List<float>();
@@ -127,5 +132,12 @@ public class Reel : MonoBehaviour
             DoSpinMotion();
         }
         
+    }
+    public Reel(float spinningSpeed, ReelDirection direction, float distanceBetweenFigures, List<Figure> figures){
+        this.spinningSpeed = spinningSpeed;
+        this.direction = direction ;
+        this.distanceBetweenFigures = distanceBetweenFigures;
+        this.figures = figures;
+
     }
 }
