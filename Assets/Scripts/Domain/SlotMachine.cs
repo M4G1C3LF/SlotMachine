@@ -34,6 +34,12 @@ public class SlotMachine : MonoBehaviour
     private GameObject addCreditsButton;
     private bool isSpinning;
 
+    public int GetCredits(){
+        return credits;
+    }
+    public bool IsSpinning(){
+        return isSpinning;
+    }
     private void OnEnable() {
         UpdateUICredits(credits);
         UpdateUICreditsEarned(0);
@@ -91,7 +97,9 @@ public class SlotMachine : MonoBehaviour
 
     public void Add50Credits(){
         credits += 50;
-        SFXManager.GetSFXManager().PlayAddCredit();
+        SFXManager sFXManager = SFXManager.GetSFXManager();
+        if (sFXManager != null)
+            sFXManager.PlayAddCredit();
         UpdateUICredits(credits);
         CheckSpinButton();
     }
@@ -138,11 +146,11 @@ public class SlotMachine : MonoBehaviour
         rollerStoppingFrequencyTimer.InitializeTimer();
         isSpinning = false;
 
-        CheckPaylines();
+        CheckPaylines(paylines, reels);
         CheckSpinButton();
     }
 
-    private void CheckPaylines(){
+    public void CheckPaylines(List<Payline> paylines, List<Reel> reels){
 
         List<Combination> totalCombinations = new List<Combination>();
         paylines.ForEach(payline => {
@@ -223,23 +231,32 @@ public class SlotMachine : MonoBehaviour
 
         UpdateUICredits(credits);
         UpdateUICreditsEarned(creditsEarned);
-
+    SFXManager sFXManager = SFXManager.GetSFXManager();
+        
         
         if(creditsEarned == 0){
-            SFXManager.GetSFXManager().PlayNoReward();
+            if (sFXManager != null)
+                sFXManager.PlayNoReward();
         } else {
-            SFXManager.GetSFXManager().PlayReward();
+            if (sFXManager != null)
+                sFXManager.PlayReward();
         }
     }
 
     private void UpdateUICredits(int value){
-        Utils.UpdateText(Utils.FindChildrenWithTag(gameObject,Tags.UI_CREDITS_VALUE), value.ToString());
+        GameObject wrapper = Utils.FindChildrenWithTag(gameObject,Tags.UI_CREDITS_VALUE);
+        if (wrapper != null)
+            Utils.UpdateText(wrapper, value.ToString());
     }
     private void UpdateUICreditsEarned(int value){
-        Utils.UpdateText(Utils.FindChildrenWithTag(gameObject,Tags.UI_CREDITS_EARNED_VALUE), value.ToString());
+        GameObject wrapper = Utils.FindChildrenWithTag(gameObject,Tags.UI_CREDITS_EARNED_VALUE);
+        if (wrapper != null)
+            Utils.UpdateText(wrapper, value.ToString());
     }
     private void UpdateUISpinCostValue(int value){
-        Utils.UpdateText(Utils.FindChildrenWithTag(gameObject,Tags.UI_SPIN_COST_VALUE), value.ToString());
+        GameObject wrapper = Utils.FindChildrenWithTag(gameObject,Tags.UI_SPIN_COST_VALUE);
+        if (wrapper != null)
+            Utils.UpdateText(wrapper, value.ToString());
     }
     // Start is called before the first frame update
     void Start()
@@ -247,9 +264,12 @@ public class SlotMachine : MonoBehaviour
         BGMManager.GetBGMManager().PlayTrack(0);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+   public SlotMachine(int credits, int creditsPerSpin, List<Payline> paylines, List<Reel> reels, List<Reward> rewards, int centralPosition){
+       this.credits = credits;
+       this.creditsPerSpin = creditsPerSpin;
+       this.paylines = paylines;
+       this.reels = reels;
+       this.rewards = rewards;
+       this.centralPosition = centralPosition;
+   }
 }

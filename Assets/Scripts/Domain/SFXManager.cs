@@ -10,7 +10,8 @@ public class SFXManager : AudioManager
       public AudioClip reward;
       public AudioClip addCredit;
       public static SFXManager GetSFXManager() {
-         return GameObject.FindWithTag(Tags.SFX_MANAGER).GetComponent<SFXManager>();
+         GameObject sFXManager = GameObject.FindWithTag(Tags.SFX_MANAGER);
+         return sFXManager != null ? sFXManager.GetComponent<SFXManager>() : null;
       }
       public void PlayStartReelSpin(){
          PlayClip(startReelSpin);

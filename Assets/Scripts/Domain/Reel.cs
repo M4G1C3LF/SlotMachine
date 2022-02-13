@@ -15,7 +15,6 @@ public class Reel : MonoBehaviour
     public float distanceBetweenFigures;
     private List<Figure> figures;
     private bool isSpinning;
-    
     private void OnEnable() {
         GetAllFiguresOnReel();
         SetDistanceBetweenFigures();
@@ -83,11 +82,15 @@ public class Reel : MonoBehaviour
 
     public void StartSpinning(){
         isSpinning = true;
-        SFXManager.GetSFXManager().PlayStartReelSpin();
+        SFXManager sFXManager = SFXManager.GetSFXManager();
+        if (sFXManager != null)
+            sFXManager.PlayStartReelSpin();
     }
     public void StopSpinning(){
         isSpinning = false;
-        SFXManager.GetSFXManager().PlayStopReelSpin();
+        SFXManager sFXManager = SFXManager.GetSFXManager();
+        if (sFXManager != null)
+            sFXManager.PlayStopReelSpin();
         figures = SortFigureByDescendingPosition(figures);
         figures = SetFiguresToCorrectPosition(figures);
         
