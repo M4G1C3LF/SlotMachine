@@ -84,18 +84,19 @@ public class Reel : MonoBehaviour
     public void StopSpinning(){
         isSpinning = false;
         SFXManager.GetSFXManager().PlayStopReelSpin();
-        SortFiguresByDescendingPosition();
+        figures = SortByDescendingPosition(figures);
         SetFiguresToCorrectPosition();
         
     }
-    private void SortFiguresByDescendingPosition(){
-        figures.Sort(delegate(GameObject a, GameObject b)
+    private List<GameObject> SortByDescendingPosition(List<GameObject> list){
+        list.Sort(delegate(GameObject a, GameObject b)
         {
             if (a == null && b == null) return 0;
             else if (a == null) return -1;
             else if (b == null) return 1;
             else return b.transform.localPosition.y.CompareTo(a.transform.localPosition.y);
         });
+        return list;
     }
     private void SetFiguresToCorrectPosition(){
         List<float> yPositions = GetFiguresYPositions();

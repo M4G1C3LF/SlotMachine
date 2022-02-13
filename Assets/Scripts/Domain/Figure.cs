@@ -30,4 +30,7 @@ public class Figure : MonoBehaviour
     {
         
     }
+    public Figure(FigureType figureType){
+        figureType = this.figureType;
+    }
 }
