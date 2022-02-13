@@ -258,6 +258,10 @@ public class SlotMachine : MonoBehaviour
         if (wrapper != null)
             Utils.UpdateText(wrapper, value.ToString());
     }
+    public void QuitApplication(){
+        Debug.Log("Quit Application");
+        Application.Quit(0);
+    }
     // Start is called before the first frame update
     void Start()
     {
