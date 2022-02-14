@@ -5,10 +5,6 @@ using UnityEngine.UI;
 [System.Serializable]
 public class CustomButton : Button, IPointerDownHandler, IPointerUpHandler
 {
-    [SerializeField]
-    public Sprite defaultSprite;
-    [SerializeField]
-    public Sprite onClickSprite;
     public void OnPointerDown(PointerEventData eventData){
         GetComponent<Animator>().SetBool(AnimatorParameters.BUTTON_IS_CLICKED, true);
         
